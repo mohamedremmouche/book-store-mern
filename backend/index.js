@@ -9,9 +9,12 @@ app.get("/", (req, res) => {
     
     return res.status(200).send('Salam Alikoum')})
 
-    //route for save a new book
+app.post("/", (req, res) => {
+        return res.status(200).send('Salam Alikoum')})
     
-app.post("/books", async (request, response) => {
+    
+        //route for save a new book
+    app.post("/books", async (request, response) => {
     try{
         if(!request.body.title || !request.body.authoe || !request.body.publishYear){
             return response.status(400).send({meassage: "Send all required fields: title, author, publishYear"})
@@ -22,16 +25,13 @@ app.post("/books", async (request, response) => {
             publishYear : request.body.publishYear,
         }
         const book = await Book.create(newBook);
-        return reaponse.status(201).send(book);
+        return response.status(201).send(book);
     }catch(error){
         console.log(error)
         response.status(500).send({message: error.message})
     }
 })
     
-
-
-
 mongoose.connect(booksStoreDBURL)
 .then(() => {
     console.log("DataBase Connected")
