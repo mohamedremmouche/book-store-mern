@@ -2,21 +2,30 @@ import express, { request, response } from "express"
 import mongoose from "mongoose";
 import {PORT, booksStoreDBURL} from "./config.js"
 import { Book } from "./models/bookModel.js";
+import cors from "cors";
 
 const app = express();
 
-app.get("/", (req, res) => {
-    
-    return res.status(200).send('Salam Alikoum')})
+//Middleware for parsing request body
+app.use(express.json());
 
-app.post("/", (req, res) => {
-        return res.status(200).send('Salam Alikoum')})
+//Middleware for handling CORS Policy
+//Option1: Allow all origins with default of cors(*)
+app.use(cors());
+
+app.get("/", (request, response) => {
+    console.log(request.body)
+    return response.status(200).send('Salam Alikoum')})
+
+app.post("/", (request, response) => {
+    console.log(request.body)
+        return response.status(200).send('oualikoum salam')})
     
     
         //route for save a new book
     app.post("/books", async (request, response) => {
     try{
-        if(!request.body.title || !request.body.authoe || !request.body.publishYear){
+        if(!request.body.title || !request.body.author || !request.body.publishYear){
             return response.status(400).send({meassage: "Send all required fields: title, author, publishYear"})
         }
         const newBook = {
